@@ -96,12 +96,10 @@ runtime keeps in the per-user save folder; test runs belong on a fresh
   `D3DPRESENTFLAG_WIDESCREEN` and does the rest itself.
 - **Seeds:** ten thread routines and indirect-call targets found by running
   it (`tools.seed_from_log`).
-- **The disc's `default.xbe`** in the copy this was brought up on was patched
-  (the certificate's allowed media widened to all, and at 0x001791B9 the
-  `jge` after a call's result made a `jmp`), with the original kept as
-  `default.bak`. This project was lifted and run from the patched image. The
-  original should behave the same, since the toolkit answers XAPI's media
-  checks, but that has not been tried.
+- **Two images are accepted** (`release/thug.json`): the European disc's
+  `default.xbe` and a common hard-drive copy of it (the certificate's allowed
+  media widened, and the `jge` at 0x001791B9 that follows XAPI's disc check
+  made a `jmp`). Both reach gameplay.
 
 The toolkit fixes this game needed (on `title/thug`):
 
@@ -110,7 +108,24 @@ The toolkit fixes this game needed (on `title/thug`):
   none bound in the current frame, so everything after the 512th sampled
   white; the loading screen, drawn last, came out pure white between scenes.
   The cache now grows for such a frame.
+- **The disc's security sector.** THUG's certificate asks XAPI to check the
+  security sector as well as the security page. The toolkit refused that read,
+  so the disc's own `default.xbe` rebooted into itself and quit. It is now
+  answered with a sector made for the running title.
 - **Pads opened without enumeration** (from THPS3, `title/thps3`).
+
+## Releases
+
+A version tag (`git tag v1.0 && git push origin v1.0`) runs
+`.github/workflows/release.yml`, which builds self-building releases for
+Linux x86-64, macOS arm64, Windows x86-64 and Android arm64 and publishes them
+on the tag's GitHub release. None of them holds game code: the launcher asks
+for the player's own disc or folder and builds the game on their machine
+(the toolkit's `docs/technical/self-build-release.md`). The recipe is
+`release/thug.json`. Run the workflow by hand for a dry run that publishes
+nothing. The Android job signs with the `ANDROID_SIGNING_KEY` and
+`ANDROID_SIGNING_PASSWORD` repository secrets; a dry run with `sign` off uses
+a throwaway key.
 
 ## Scripted route
 
