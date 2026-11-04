@@ -1,0 +1,13 @@
+{
+  "title_name": "Tony Hawk's Underground",
+  "title_id": "4156002D",
+  "project": "..",
+  "exe": "thug_recomp",
+  "launcher": "thug_launcher",
+  "release_name": "thug",
+  "images": [
+    {"sha1": "408756c060f32dfc125f8d30437ee51bb573e232", "name": "Disc (Europe)"},
+    {"sha1": "fb86665b761056445e1661554c240dace3eeb617", "name": "Hard-drive copy (Europe)"}
+  ],
+  "android": {"package": "org.directxboxrecomp.tonyhawksunderground", "label": "Tony Hawk's Underground"}
+}
