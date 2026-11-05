@@ -29,9 +29,10 @@ unresolved indirect calls in two-minute runs.
   has a 16:9 mode of its own, switched by the console's widescreen setting,
   which widens its camera. Its menus and HUD stay laid out for 4:3 in that
   mode, so they are kept at 4:3 in the middle (`CENTRE_2D`); full-screen
-  fades and tints span the picture. The main menu's 3D backdrop is a set
-  built for 4:3: in 16:9 it reaches the right edge and leaves the left one
-  in the game's clear colour.
+  fades and tints span the picture. The front end's 3D panel behind the
+  menus (the city and the skater's silhouette) is drawn by the game's
+  widened camera, so in 16:9 it runs past the 4:3 menu to the right edge of
+  the screen, where on a 16:9 TV the stretched menu would meet it.
 - **Colour.** Skaters draw with fog off through a final combiner that
   weights fog per channel; the toolkit used to read the fog register as
   fully fogged there, which tinted every skater purple. Fixed on
@@ -132,6 +133,13 @@ The toolkit fixes this game needed (on `title/thug`):
   not), which never saw the title's clear, so the 3D skater and city panel
   failed their depth test: half the screen faded to black and an old logo
   smeared across it. The stand-in now gets the device depth's clear.
+- **Menu transitions stay sharp.** THUG renders with 2x horizontal
+  antialiasing, and the XDK's Swap filters the 1280x480 back buffer into a
+  separate 640x480 front buffer. On the host both are one picture, so the
+  filter resampled the frame over itself; in a transition, where each frame
+  fades over the last, that blur compounded. The filter pass is no longer
+  drawn, and the 640x480 texture the transitions render into is drawn at the
+  scene's supersampling like the screen.
 - **A colour ramp spans the picture.** With 2D kept at 4:3, a full-screen
   quad through a texture at most 8 texels across one way (the pause tint's
   256x4) is a whole-screen pass, like a fade.
