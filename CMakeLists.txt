@@ -182,8 +182,11 @@ endif()
 
 # THUG has a 16:9 mode of its own, switched by the console flag: with it set
 # it asks CreateDevice for D3DPRESENTFLAG_WIDESCREEN and widens its own
-# camera and HUD layout. The flag and a 16:9 presentation are the whole job.
-recomp_title_widescreen(NATIVE)
+# camera. Its 2D stays laid out for 4:3 in that mode, so it is kept at 4:3
+# (CENTRE_2D). Measuring each draw instead split its menu backdrop, which is
+# built from strips either side of the "wide enough to be a backdrop" line:
+# half stretched, half squeezed, a gap on one side and overflow on the other.
+recomp_title_widescreen(NATIVE CENTRE_2D)
 
 # The launcher (the toolkit's src/launcher): the settings worth choosing,
 # written to the file the game reads, then the game started. Beside the

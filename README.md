@@ -26,12 +26,16 @@ unresolved indirect calls in two-minute runs.
 - **Sound.** Native DirectSound path: music and dialogue streams and the
   sound effects are all heard (`[AUDIO] health` in the log).
 - **Widescreen** (`widescreen = 1`, launcher or `RECOMP_WIDESCREEN=1`). THUG
-  has a 16:9 mode of its own, switched by the console's widescreen setting:
-  it widens its camera and lays out its HUD for 16:9, so nothing is stretched.
-  The main menu's backdrop is a 3D set built for 4:3, and in 16:9 the camera
-  sees past its edges to the clear colour (grey-blue bands at the sides);
-  the renderer draws what the game asks for, so this is how its own 16:9 mode
-  looks.
+  has a 16:9 mode of its own, switched by the console's widescreen setting,
+  which widens its camera. Its menus and HUD stay laid out for 4:3 in that
+  mode, so they are kept at 4:3 in the middle (`CENTRE_2D`); full-screen
+  fades and tints span the picture. The main menu's 3D backdrop is a set
+  built for 4:3: in 16:9 it reaches the right edge and leaves the left one
+  in the game's clear colour.
+- **Colour.** Skaters draw with fog off through a final combiner that
+  weights fog per channel; the toolkit used to read the fog register as
+  fully fogged there, which tinted every skater purple. Fixed on
+  `title/thug`.
 
 Not yet checked: other levels and modes, two-player, the create modes beyond
 Create-a-Skater, saving, and the sound by ear.
@@ -112,6 +116,13 @@ The toolkit fixes this game needed (on `title/thug`):
   security sector as well as the security page. The toolkit refused that read,
   so the disc's own `default.xbe` rebooted into itself and quit. It is now
   answered with a sector made for the running title.
+- **Fog off means no fog.** The combiners read the fog register's alpha from
+  the vertex stage even with fog disabled, where the NV2A gives 1. THUG's
+  skater shaders weight fog per channel and draw with fog off, so every
+  skater came out magenta and purple.
+- **A colour ramp spans the picture.** With 2D kept at 4:3, a full-screen
+  quad through a texture at most 8 texels across one way (the pause tint's
+  256x4) is a whole-screen pass, like a fade.
 - **Pads opened without enumeration** (from THPS3, `title/thps3`).
 
 ## Releases
