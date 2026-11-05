@@ -120,6 +120,18 @@ The toolkit fixes this game needed (on `title/thug`):
   the vertex stage even with fog disabled, where the NV2A gives 1. THUG's
   skater shaders weight fog per channel and draw with fog off, so every
   skater came out magenta and purple.
+- **A shadow-map test clamps its depth.** The skater's shadow is projected
+  onto the ground around them and tested against a depth map drawn from the
+  shadow's point of view. Ground beyond that view's far limit compared
+  unclamped, failed the test, and came out as dark bands and triangles; it
+  now compares as the far limit and is lit, as on the hardware.
+- **A menu transition's offscreen pass gets the cleared depth.** During a
+  menu change THUG draws the new menu into a 640x480 texture with the
+  device's depth and fades it over the old screen. The host keeps a separate
+  depth for that texture (the device depth is supersampled, the texture is
+  not), which never saw the title's clear, so the 3D skater and city panel
+  failed their depth test: half the screen faded to black and an old logo
+  smeared across it. The stand-in now gets the device depth's clear.
 - **A colour ramp spans the picture.** With 2D kept at 4:3, a full-screen
   quad through a texture at most 8 texels across one way (the pause tint's
   256x4) is a whole-screen pass, like a fade.

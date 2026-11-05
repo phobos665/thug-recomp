@@ -35,7 +35,7 @@ env:
   # commit of DirectXbox-Recomp. Pinned, so a release is built from the
   # toolkit it was tested with: title/thug at cb4a11f (DirectXbox-Recomp
   # #118, not on main yet; move this to main once it is merged).
-  TOOLKIT_REF: 842ec2c297622566460595026edd63b5c412b2cb
+  TOOLKIT_REF: f88f3185467ba5c5b9774d7af3651bd0ccb5f514
 
 jobs:
   linux:
